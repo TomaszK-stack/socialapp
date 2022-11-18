@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-
-from .models import Profile
+from django.contrib.auth.models import User
+from .models import Profile , Friendship , Invitation
 
 
 class ProfileSerializer(ModelSerializer):
@@ -8,8 +8,29 @@ class ProfileSerializer(ModelSerializer):
         model = Profile
 
         fields = [
+            'id',
             'name' ,
             'surname' ,
-            'user' ,
+            'username' ,
+
+        ]
+
+
+# class UserSer(ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields =
+#         [
+#             'id'
+#         ]
+
+
+class InvitationSer(ModelSerializer):
+    class Meta:
+        model = Invitation
+        fields = [
+            'from_som' ,
+            'to_som' ,
+            'accepted' ,
 
         ]

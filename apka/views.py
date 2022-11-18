@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions
 from rest_framework import viewsets
+from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.mixins import UpdateModelMixin
 from .models import *
@@ -7,7 +8,7 @@ from .serializers import *
 from rest_framework import filters
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-
+from rest_framework.authtoken.models import Token
 
 class ProfileView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
@@ -84,13 +85,11 @@ def add_invitation(request, username_from, username_to):
 
 
 @api_view(["GET"])
-def return_prof_id(request, username):
-    current_user = User.objects.filter(username = username).first()
-    profile = Profile.objects.filter(user = current_user).first()
-    if profile:
-        serializer = ProfileSerializer(profile)
-        return Response(serializer.data)
-    else:
-        return Response({"Sorry, something went wrong": []})
+def get_auth_user(request, token):
+    user_id = Token.objects.get(key = token).user_id
+    user = User.objects.filter(id = user_id).first()
+    profile = Profile.objects.filter(user = user).first()
+
+    return JsonResponse({"id": profile.id})
 
 

@@ -1,7 +1,7 @@
 from django.urls import path , include
 from rest_framework import routers
 
-from .views import ProfileView , ProfileViewSet , UpdateApiView , ListaProfili , Profilelistview,add_invitation, return_prof_id
+from .views import ProfileView , ProfileViewSet , UpdateApiView , ListaProfili , Profilelistview,add_invitation, get_auth_user
 
 router = routers.SimpleRouter()
 router.register('edit' , ProfileViewSet)
@@ -14,5 +14,6 @@ urlpatterns = [
     path('update/<int:pk>' , UpdateApiView.as_view() , name = 'update') ,
     path('search/<name>' , Profilelistview.as_view() , name = "search") ,
     path("cr_inv/<int:username_from>/<int:username_to>" , add_invitation, name = "add_invitation"),
-    path("after_auth/<username>" , return_prof_id, name = "add_invitation"),
+    path("<token>" , get_auth_user, name = "get_auth_user"),
+
 ]

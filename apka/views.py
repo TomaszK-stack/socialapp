@@ -21,9 +21,11 @@ class ProfileView(generics.RetrieveAPIView):
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
+    lookup_field = "username"
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    lookup_field = "pk"
+    print(lookup_field)
+
 
 
 
@@ -50,12 +52,10 @@ class Profilelistview(generics.ListAPIView):
 
     def get_queryset(self):
         name = self.kwargs['name']
-        return Profile.objects.filter(name = name)
+        return Profile.objects.filter(name = name )
 
 
-class ListaProfili(viewsets.ReadOnlyModelViewSet):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+
 
 @api_view(["POST", "GET"])
 def add_invitation(request, username_from, username_to):
